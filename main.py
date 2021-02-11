@@ -7,9 +7,11 @@ query_doc = "data science is the sexiest job of the 21st century"
 
 ds = DocumentSimilarity()
 tf = ds.tf(df, colnames)
-qtf = dict(tf)
+print("tf done")
+
 
 #call this on request
+qtf = dict(tf)
 tf_idf = ds.tdfIdf(tf, df, colnames, query_doc)
-
-print(tf_idf)
+print("tf_idf done")
+#print(tf_idf)
