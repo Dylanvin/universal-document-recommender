@@ -1,7 +1,7 @@
 from document_similarity import TfIdf
 import pandas as pd
 
-pd.set_option('display.max_colwidth', None)
+pd.set_option('display.max_colwidth', 100)
 colnames=['Catagory', 'Text']
 df = pd.read_csv('20ng-test-all-terms.txt', names = colnames, sep = '\t')
 query_doc = "my bike broke and now its leaking"
