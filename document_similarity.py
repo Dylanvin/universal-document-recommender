@@ -1,7 +1,9 @@
 import re
 import math
+import numpy as np
+import itertools
 
-class DocumentSimilarity:
+class TfIdf:
     def __init__(self):
         pass
 
@@ -30,7 +32,7 @@ class DocumentSimilarity:
                 tf[word][query_index] = words.count(word)/len(words)
         return tf
 
-    def tfAndQuery(self, df, colnames, doc, catagory):
+    def tfDocAndQuery(self, df, colnames, doc, catagory):
         tf = {}
         df = df.append({colnames[0]:catagory, colnames[1]:doc}, ignore_index=True)
         query_words = set(re.sub("[^\w]", " ", doc).split())
@@ -43,7 +45,7 @@ class DocumentSimilarity:
                     else:
                         tf[word] = [0] * (len(df.index))
                         tf[word][index] = words.count(word)/len(words)
-        return tf
+        return tf, df
 
     #IDF section (run after request) only finds idf of query doc words
     def queryIdf(self, df, colnames, doc):
@@ -64,11 +66,38 @@ class DocumentSimilarity:
         return idf
 
     def tdfIdf(self, df, colnames, query_doc, catagory):
-        qtf = self.tfAndQuery(df, colnames, query_doc, catagory)
+        qtf, df = self.tfDocAndQuery(df, colnames, query_doc, catagory)
         qidf = self.queryIdf(df, colnames, query_doc)
         tf_idf = {}
         for key in qidf:
-            tf_idf[key] = [0] * (len(df.index) + 1)
-            for i in range(len(df.index) + 1):
+            tf_idf[key] = [0] * (len(df.index))
+            for i in range(len(df.index)):
                 tf_idf[key][i] = qtf[key][i] * qidf[key]
         return tf_idf
+
+    def cosineSimilarity(self, doc, query):
+        norm_doc = np.linalg.norm(doc)
+        norm_query = np.linalg.norm(query)
+        if norm_doc * norm_query == 0:
+            return 0
+        cos_theta = np.dot(doc, query) / (norm_doc * norm_query)
+        #theta = math.degrees(math.acos(cos_theta))
+        return round(cos_theta, 10)
+
+    def similarDocs(self, tf_idf, size, method, amount):
+        if method == "cosine":
+            query_tf_idf_ls = []         #tf_idf list for query doc
+            for key in tf_idf:
+                query_tf_idf_ls.append(tf_idf[key][size])
+
+            doc_dict = {}
+            for i in range(size):
+                doc_tf_idf_ls = []
+                for key in tf_idf:                                   #loop for tf_idf list of docs
+                    doc_tf_idf_ls.append(tf_idf[key][i])
+                angle = self.cosineSimilarity(doc_tf_idf_ls, query_tf_idf_ls)
+                doc_dict[i] = angle
+
+            doc_dict = {k: v for k, v in sorted(doc_dict.items(), key=lambda item: item[1], reverse=True)}
+
+            return dict(itertools.islice(doc_dict.items(), amount))
