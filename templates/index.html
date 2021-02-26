@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Universal Document Recommender</h1>
+<form method="post">
+    <dl>
+        <dt>Choose an algorithm:</dt>
+        <dd>{{ form.algorithm }}</dd>
+        <dt>Enter query text:</dt>
+        <dd>{{ form.query(rows='30', cols='80') }}</dd>
+        <dt>Select the category which best fits document:</dt>
+         <dd>{{ form.category }}</dd>
+    </dl>
+    <input type="submit">
+</form>
+{% endblock %}

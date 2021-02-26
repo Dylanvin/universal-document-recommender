@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+    <title>Universal Document Recommender</title>
+</head>
+<body>
+<div id="content">{% block content %}{% endblock %}</div>
+{% block footer %}
+    <div class="footer">
+        <p>Dylan Vincent</p>
+    </div>
+{% endblock %}
+</body>
+</html>
