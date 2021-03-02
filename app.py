@@ -13,7 +13,10 @@ import re
 import os.path
 import pickle
 import numpy as np
+import nltk
 
+nltk.download('stopwords')
+nltk.download('wordnet')
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
@@ -47,7 +50,7 @@ def index():
 
         # Cleaning query text
         query_doc_tokenized = word_tokenize(query_doc)
-        query_doc_tokenized = [token.lower() for token in query_doc_tokenized]
+        query_doc_tokenized = [lemma.lemmatize(token.lower()) for token in query_doc_tokenized]
         query_doc_tokenized = [word for word in query_doc_tokenized if not word in stopwords.words()]
         filtered_query_doc = (" ").join(query_doc_tokenized)
         print(filtered_query_doc)
@@ -144,4 +147,4 @@ vec_file = 'vecs.txt'
 vecs = get_vecs(vec_file, model_file)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host ='0.0.0.0', port=80, debug=True)
