@@ -1,6 +1,11 @@
-
-html {
+html, body {
     font-size: 150%;
+    background-color: #e0c68b !important;
+    margin: 0;
+}
+
+form{
+    padding: 10px;
 }
 
 table, th, td {

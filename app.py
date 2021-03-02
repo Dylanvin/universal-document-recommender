@@ -1,15 +1,19 @@
-from flask import Flask, render_template, redirect, url_for, request, jsonify
+from flask import Flask, render_template, request
 from forms import RunSystemForm
 from algorithms.tfidf_document_similarity import TfIdf
 from algorithms.doc2vec_document_similarity import D2V
 from algorithms.lsa_document_similarity import LSA
-import pandas as pd
+from algorithms.evaluate import Evaluate
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 from sklearn.datasets import fetch_20newsgroups
+import pandas as pd
 import re
-import os
+import os.path
+import pickle
+import numpy as np
+
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
@@ -25,7 +29,6 @@ def text(doc):
 @app.route('/', methods=['post', 'get'])
 def index():
     form = RunSystemForm()
-
     form.category.choices = list(target_names)
     if form.validate_on_submit():
         print(form.algorithm.data)
@@ -37,10 +40,10 @@ def index():
     if request.method == 'POST':
         # getting webpage args
         alg = request.form['algorithm']
+        dist_method = request.form['measurement']
         query_doc = request.form['query']
         category = request.form['category']
-        method = 'cosine'
-        n = 5
+        n = int(request.form['num'])
 
         # Cleaning query text
         query_doc_tokenized = word_tokenize(query_doc)
@@ -52,7 +55,7 @@ def index():
             print("########################## TFIDF ##########################")
             ds = TfIdf()
             tf_idf = ds.tdfIdf(df, colnames, filtered_query_doc, category)
-            docs = ds.similarDocs(tf_idf, len(df.index), method,
+            docs = ds.similarDocs(tf_idf, len(df.index), dist_method,
                                   n)  # assumes query is the last doc in every value of key
             doc_list = []
             dist_list = []
@@ -65,7 +68,7 @@ def index():
             print("########################## LSA ##########################")
             ds = LSA()
             lsa = ds.tfidf_svd(df, colnames, filtered_query_doc, category)
-            docs = ds.similarDocs(lsa, len(df.index), method, n)
+            docs = ds.similar_docs(lsa, len(df.index), dist_method, n)
             doc_list = []
             dist_list = []
             for key, value in docs.items():
@@ -76,36 +79,46 @@ def index():
             # word2vec
             print("########################## WORD2VEC ##########################")
             ds = D2V()
-            model = ds.train(df, colnames)
-            docs = ds.similarDocs(model, df, colnames, filtered_query_doc, method, n)
+            model = ds.train(df, colnames, model_file)
+            docs = ds.similar_docs(model, vecs, df, colnames, filtered_query_doc, dist_method, n)
             doc_list = []
             dist_list = []
-            for i in docs:
-                doc_list.append(i[0])
-                dist_list.append(round(i[1], 5))
+            # for i in docs:
+            #     doc_list.append(i[0])
+            #     dist_list.append(round(i[1], 5))
+            for key, value in docs.items():
+                doc_list.append(key)
+                dist_list.append(round(value, 5))
 
         doc_d = df.iloc[doc_list]
-
         doc_d["Distance"] = dist_list
-        print(doc_d.head(5))
+        eval = Evaluate()
+        doc_cats = doc_d[colnames[0]].to_list()
+        score = eval.get_score(doc_cats, category)
         doc_d = doc_d.to_dict('records')
 
-        return render_template('results.html', doc_d=doc_d, category=category)
+        return render_template('results.html', doc_d=doc_d, category=category, score = score)
 
     return render_template('index.html', form=form)
 
+def get_vecs(vec_file, model_file):
+    ds = D2V()
+    model = ds.train(df, colnames, model_file)
+    if not os.path.isfile(vec_file):
+        vecs = ds.create_vecs(model, df, colnames)
+        with open(vec_file, "wb") as f:
+            pickle.dump(vecs, f)
+    else:
+        with open(vec_file, "rb") as f:
+            vecs = pickle.load(f)
+        vecs = np.array(vecs, float)
+
+    return vecs
 
 # pre-processing started
 pd.set_option('display.max_colwidth', 200)
 colnames = ['Category', 'Text']
 # use sklearn 20newsgroups data set and use NLTK prepossessing methods
-
-## dataset in repo
-# df1 = pd.read_csv('datasets/20ng-test-all-terms.txt', names=colnames, sep='\t')
-# df2 = pd.read_csv('datasets/20ng-train-all-terms.txt', names=colnames, sep='\t')
-# frames = [df1, df2]
-# df = pd.concat(frames)
-# df = df.reset_index(drop=True)
 dataset = fetch_20newsgroups(remove=('headers', 'footers', 'quotes'))
 target_names = dataset.target_names
 df = pd.DataFrame({'Category': dataset.target, 'Text': dataset.data})
@@ -125,6 +138,10 @@ colnames.append('Text cleaned')
 algorithms = ['tfidf', 'lsa', 'Doc2Vec']  # list of available methods to use
 print("pre-processing done")
 # pre-processing finished
+#doc2vec creating vecs
+model_file = 'd2v.model'
+vec_file = 'vecs.txt'
+vecs = get_vecs(vec_file, model_file)
 
 if __name__ == '__main__':
     app.run(debug=True)
