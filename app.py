@@ -3,6 +3,7 @@ from forms import RunSystemForm
 from algorithms.tfidf_document_similarity import TfIdf
 from algorithms.doc2vec_document_similarity import D2V
 from algorithms.lsa_document_similarity import LSA
+from algorithms.bert_document_similarity import BERT
 from algorithms.evaluate import Evaluate
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -83,12 +84,23 @@ def index():
             print("########################## WORD2VEC ##########################")
             ds = D2V()
             model = ds.train(df, colnames, model_file)
-            docs = ds.similar_docs(model, vecs, df, colnames, filtered_query_doc, dist_method, n)
+            docs = ds.similar_docs(model, doc2vec_vecs, df, colnames, filtered_query_doc, dist_method, n)
             doc_list = []
             dist_list = []
             # for i in docs:
             #     doc_list.append(i[0])
             #     dist_list.append(round(i[1], 5))
+            for key, value in docs.items():
+                doc_list.append(key)
+                dist_list.append(round(value, 5))
+
+        elif alg == "bert":
+            # word2vec
+            print("########################## BERT ##########################")
+            ds = BERT()
+            docs = ds.similar_docs(bert_vecs, filtered_query_doc, dist_method, n)
+            doc_list = []
+            dist_list = []
             for key, value in docs.items():
                 doc_list.append(key)
                 dist_list.append(round(value, 5))
@@ -104,11 +116,16 @@ def index():
 
     return render_template('index.html', form=form)
 
-def get_vecs(vec_file, model_file):
-    ds = D2V()
-    model = ds.train(df, colnames, model_file)
+def get_vecs(vec_file, alg):
+
     if not os.path.isfile(vec_file):
-        vecs = ds.create_vecs(model, df, colnames)
+        if alg == "doc2vec":
+            ds = D2V()
+            model = ds.train(df, colnames, model_file)
+            vecs = ds.create_vecs(model, df, colnames)
+        elif alg == "bert":
+            ds = BERT()
+            vecs = ds.create_vecs(df, colnames)
         with open(vec_file, "wb") as f:
             pickle.dump(vecs, f)
     else:
@@ -142,9 +159,16 @@ algorithms = ['tfidf', 'lsa', 'Doc2Vec']  # list of available methods to use
 print("pre-processing done")
 # pre-processing finished
 #doc2vec creating vecs
+alg = "doc2vec"
 model_file = 'd2v.model'
-vec_file = 'vecs.txt'
-vecs = get_vecs(vec_file, model_file)
+vec_file = 'doc2vec_vecs.txt'
+doc2vec_vecs = get_vecs(vec_file, alg)
 
+alg = "bert"
+vec_file = 'bert_vecs.txt'
+bert_vecs = get_vecs(vec_file, alg)
+
+print(__name__)
 if __name__ == '__main__':
-    app.run(host ='0.0.0.0', port=5000)
+    print("test")
+    app.run(host='0.0.0.0', threaded=True)

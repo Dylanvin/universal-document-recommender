@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+ <div class="results">
 <h1>Results</h1>
     <p>Query document category: {{ category }}</p>
-    <p>Score: {{ score }}</p>
+    <p>Evaluation score: {{ score }}</p>
 <table>
     <tr>
         <th> Category</th>
@@ -18,4 +19,5 @@
         </tr>
     {% endfor %}
 </table>
+     </div>
 {% endblock %}

@@ -1,20 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
+
     <h1>Universal Document Recommender</h1>
+     <div class="entry-form">
     <form method="post">
         <dl>
+
             <dt>Choose an algorithm:</dt>
-            <dd>{{ form.algorithm }}</dd>
-            <dt>Choose a distance calculation method:</dt>
-            <dd>{{ form.measurement }}</dd>
+         <div class="radio-toolbar">
+                {% for subfield in form.algorithm %}
+                    <tr>
+                        <td>{{ subfield }}</td>
+                        <td>{{ subfield.label }}</td>
+                    </tr>
+                {% endfor %}
+            </div>
+
+                <dt>Choose a distance calculation method:</dt>
+          <div class="radio-toolbar">
+                {% for subfield in form.measurement %}
+                    <tr>
+                        <td>{{ subfield }}</td>
+                        <td>{{ subfield.label }}</td>
+                    </tr>
+                {% endfor %}
+            </div>
+
             <dt>Enter query text:</dt>
             <dd>{{ form.query(rows='20', cols='60') }}</dd>
             <dt>Select the category which best fits document:</dt>
             <dd>{{ form.category }}</dd>
             <dt>choose number of documents to receive (from most to least relevant):</dt>
-             <dd>{{ form.num }}</dd>
+            <dd>{{ form.num }}</dd>
         </dl>
         <input type="submit">
     </form>
+     </div>
 {% endblock %}
