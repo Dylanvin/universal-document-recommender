@@ -2,18 +2,20 @@
 
 {% block content %}
  <div class="results">
-<h1>Results</h1>
+<h1>Results using {{ alg }} algorithm</h1>
     <p>Query document category: {{ category }}</p>
     <p>Evaluation score: {{ score }}</p>
 <table>
     <tr>
+        <th> Document number</th>
         <th> Category</th>
-         <th> Distance </th>
+         <th> Measurement ({{dist_method}}) </th>
         <th> Text</th>
     </tr>
     {% for doc in doc_d %}
         <tr>
-            <td> {{ doc['Category'] }} </td>
+             <td> {{ doc_list[loop.index - 1] }} </td>
+             <td> {{ doc['Category'] }} </td>
              <td> {{ doc['Distance'] }} </td>
             <td><a href={{ url_for('text', doc = doc['Text']) }}>Link</a></td>
         </tr>

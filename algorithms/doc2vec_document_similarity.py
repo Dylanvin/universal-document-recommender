@@ -13,6 +13,14 @@ class D2V:
         pass
 
     def train(self, df, colnames, file):
+        """
+        Trains a Doc2Vec model if it does not a;ready exist, otherwise loads pre-existing file
+
+        :param DataFrame df: corpus df
+        :param list colnames: df column names
+        :param str file: path fo model
+        :return: doc2vec model
+        """
         if not os.path.isfile(file):
             tagged_data = [TaggedDocument(words=word_tokenize(doc), tags=[i]) for i, doc in enumerate(df[colnames[2]])]
             model_d2v = Doc2Vec(vector_size=100, min_count=1, dm =1, epochs = 100)
@@ -26,7 +34,17 @@ class D2V:
         return model_d2v
 
 
-    def similar_docs(self, model, vecs, df, colnames, query_doc, method, amount):
+    def similar_docs(self, model, vecs, query_doc, method, amount):
+        """
+        returns N documents which are most similar in ascending order
+
+        :param model: Doc2Vec model
+        :param list[list] vecs: vector representation of each document in corpus
+        :param str query_doc: query document
+        :param str method: measurement method. Eith 'cosine' or 'euclidean'
+        :param amount: amount of documents to be returned
+        :return dict: dict documents in format {doc id:measurement}
+        """
         # query_vector = model.infer_vector(query_doc.split())
         # sims = model.docvecs.most_similar([query_vector], topn=amount)
         # return sims
@@ -63,6 +81,14 @@ class D2V:
         return dict(itertools.islice(doc_dict.items(), amount))
 
     def create_vecs(self, model, df, colnames):
+        """
+        converts input documents into vectors
+
+        :param model: Doc2Vec model
+        :param DataFrame df: corpus df
+        :param list colnames: df column names
+        :return list[list]: vectorised documents
+        """
         vecs = []
         for index, row in df.iterrows():
             vecs.append(model.infer_vector(row[colnames[2]].split()))

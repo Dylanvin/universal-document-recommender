@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+      <script type="text/javascript"
+         src="{{ url_for('static', filename='main.js') }}"></script>
     <title>Universal Document Recommender</title>
 </head>
-<body>
+<body onload="myFunction();">
+<div class="navbar">
+  <a href="{{ url_for('index') }}">Home</a>
+</div>
 <div id="content">{% block content %}{% endblock %}</div>
 {% block footer %}
     <div class="footer">

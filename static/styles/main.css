@@ -1,20 +1,27 @@
 html, body {
     font-size: 150%;
     background-color: #e0c68b !important;
-
+    padding-top: 20px;
+    width: 100%;
+    margin: 0;
 }
 
-form{
+h1{
+    margin-bottom: 0;
+}
+
+
+form {
     padding: 10px;
+    margin-bottom: 15px;
 }
 
+/* start https://markheath.net/post/customize-radio-button-css */
 .radio-toolbar input[type="radio"] {
-  opacity: 0;
-  position: fixed;
-  width: 0;
+    opacity: 0;
+    position: fixed;
+    width: 0;
 }
-
-
 
 div.footer {
     position: static;
@@ -23,6 +30,7 @@ div.footer {
     width: 100%;
     text-align: center;
     font-size: 11px;
+
 }
 
 .radio-toolbar label {
@@ -36,27 +44,48 @@ div.footer {
 }
 
 .radio-toolbar input[type="radio"]:checked + label {
-    background-color:#bfb;
+    background-color: #bfb;
     border-color: #4c4;
 }
 
+/* end https://markheath.net/post/customize-radio-button-css */
+
 .radio-toolbar {
-     margin-bottom: 1cm;
-     margin-left: 1.1cm;
-  }
+    margin-bottom: 1cm;
+    margin-left: 1.1cm;
+}
 
 .entry-form {
-      padding: 8px;
-  }
+    padding: 8px;
+}
 
-.entry-form dt{
-     font-size: 75%;
-  }
+.entry-form dt {
+    font-size: 75%;
+    text-decoration: underline;
+}
 
-.entry-form textarea{
+.entry-form dd {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.entry-form textarea {
     padding: 8px;
     margin-top: 8px;
 }
+
+input[type=submit] {
+    width: 20em;  height: 4em;
+}
+
+img {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -100px;
+}
+
 
 .results table, th, td {
     border: 1px solid black;
@@ -65,7 +94,35 @@ div.footer {
     margin: auto;
 }
 
-.results td, th{
+.results td, th {
     text-align: center;
 }
 
+.navbar {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    float: left !important;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.navbar a:hover {
+    background: #f1f1f1;
+    color: black;
+}
+
+.navbar a.active {
+    background-color: #4CAF50;
+    color: white;
+}

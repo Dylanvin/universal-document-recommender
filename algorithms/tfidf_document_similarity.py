@@ -109,9 +109,9 @@ class TfIdf:
 
               :param dict tf_idf: tf_idf model
               :param int size: amount of docs
-              :param str method:
-              :param int amount:
-              :return:
+              :param str method: measurement method. Eith 'cosine' or 'euclidean'
+              :param int amount: amount of documents to be returned
+              :return dict: dict documents in format {doc id:measurement}
               """
 
         query_tf_idf_ls = []  # tf_idf list for query doc
