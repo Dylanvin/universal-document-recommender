@@ -24,6 +24,7 @@ class RunSystemForm(FlaskForm):
     num = IntegerField(
         "num", widget=h5widgets.NumberInput(min=1, max=10), default=5, validators=[DataRequired()])
     showTextBox = BooleanField()
+    eval_select = BooleanField()
 
 
     def validate_query_url(self, query_url):

@@ -69,6 +69,10 @@ div.footer {
     padding-bottom: 8px;
 }
 
+.entry-form label {
+     font-size: 50%;
+}
+
 .entry-form textarea {
     padding: 8px;
     margin-top: 8px;

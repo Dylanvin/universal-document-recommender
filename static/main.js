@@ -10,3 +10,16 @@ function myFunction() {
      queryText.style.display = "none";
   }
 }
+
+function myFunction2() {
+  var checkBox = document.getElementById("eval_select");
+  var evaluation = document.getElementById("evaluation");
+  
+  if (checkBox.checked == true){
+    evaluation.style.display = "block";
+	
+  } else {
+	
+     evaluation.style.display = "none";
+  }
+}

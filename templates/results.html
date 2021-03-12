@@ -3,8 +3,10 @@
 {% block content %}
  <div class="results">
 <h1>Results using {{ alg }} algorithm</h1>
+{% if evaluate == true %}
     <p>Query document category: {{ category }}</p>
     <p>Evaluation score: {{ score }}</p>
+	{% endif %}
 <table>
     <tr>
         <th> Document number</th>

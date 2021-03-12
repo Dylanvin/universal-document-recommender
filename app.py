@@ -71,7 +71,7 @@ def index():
                                        re.sub(r'[^a-zA-Z]', ' ', w)) > 2)
 
             filtered_query_doc = a(query_doc)
-
+            evaluate = form.eval_select.data
             if alg == "TfIdf":
                 print("########################## TFIDF ##########################")
                 ds = TfIdf()
@@ -120,7 +120,7 @@ def index():
             doc_d = doc_d.to_dict('records')
 
             return render_template('results.html', doc_d=doc_d, doc_list=doc_list, category=category, score=score,
-                                   dist_method=dist_method, alg=alg)
+                                   dist_method=dist_method, alg=alg, evaluate=evaluate)
 
     return render_template('index.html', form=form)
 
