@@ -11,6 +11,9 @@ from nltk.stem import WordNetLemmatizer
 import os
 import pickle
 import numpy as np
+import html2text
+import requests
+
 
 def get_vecs(vec_file, alg):
     if not os.path.isfile(vec_file):
@@ -51,7 +54,7 @@ df['Text cleaned'] = df.Text.apply(  # Cleaning
 df['Text'] = df['Text'].str.replace('/', 'FORWARD_SLASH')  # to prevent browser from getting confused
 
 colnames.append('Text cleaned')
-algorithms = ['tfidf', 'lsa', 'Doc2Vec']  # list of available methods to use
+
 print("pre-processing done")
 
 # doc2vec and BERT creating vecs
@@ -109,20 +112,35 @@ def run_algs(alg, dist_method, n, category, filtered_query_doc):
 
     return score
 
+algorithms = ['TfIdf', 'LSA', 'Doc2Vec', 'BERT']  # list of available methods to use
+mes = ['cosine','euclidean']
+test_docs_df = pd.read_csv('test_docs.txt', delimiter = ",")
+print(test_docs_df.columns.values)
+     
+    
 
-query_doc = "She is such a nice person, this sucks! She really made a huge impact as far as female billiard players go as well. I hope the best for her."
-catagory = 'science'
-a = lambda x: " ".join(lemma.lemmatize(re.sub(r'[^a-zA-Z]', ' ', w).lower()) for w in x.split() if
-                                   re.sub(r'[^a-zA-Z]', ' ', w).lower() not in stop_words_l and len(
-                                       re.sub(r'[^a-zA-Z]', ' ', w)) > 2)
+h = html2text.HTML2Text()
+h.ignore_links = True
+h.ignore_images = True
 
-filtered_query_doc = a(query_doc)
+test_docs_df["Text"] = test_docs_df.Url.apply(
+    lambda x: h.handle(requests.get(x).text)) 
 
-
-run_algs("tfidf", 'cosine', 5, 'science', filtered_query_doc)
-
-
-
+test_docs_df['Text_cleaned'] = test_docs_df.Text.apply(  # Cleaning
+    lambda x: " ".join(lemma.lemmatize(re.sub(r'[^a-zA-Z]', ' ', w).lower()) for w in x.split() if
+                       re.sub(r'[^a-zA-Z]', ' ', w).lower() not in stop_words_l and len(
+                           re.sub(r'[^a-zA-Z]', ' ', w)) > 2))
 
 
+#print("running test")
+#for alg in algorithms:
+#    for m in mes:
+#        test_docs_df[alg + "(" + m + ")"] = test_docs_df.apply(
+#             lambda x: run_algs(alg, m, 5, x.Category, x.Text_cleaned), axis=1)
+#
+#print("test complete")
+#test_docs_df = test_docs_df.drop(columns = ["Text", "Text_cleaned", "Url"], axis=1)
+#test_docs_df.to_csv('results.csv', index=False)
 
+results_df = pd.read_csv('results.csv', delimiter = ",")
+print(results_df.mean(axis=0))
