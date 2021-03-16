@@ -7,7 +7,7 @@ html, body {
 }
 
 h1{
-    margin-bottom: 0;
+    margin-bottom: 6px;
 }
 
 
@@ -74,8 +74,32 @@ div.footer {
 }
 
 .entry-form textarea {
-    padding: 8px;
-    margin-top: 8px;
+
+      padding: 12px 20px;
+      box-sizing: border-box;
+      border: 3px solid #ccc;
+      border-radius: 4px;
+      background-color: #f8f8f8;
+      -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+}
+
+.entry-form textarea:focus {
+    border: 3px solid #555;
+}
+input[type=text], input[type=number]{
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 3px solid #ccc;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  outline: none;
+}
+
+input[type=text]:focus, input[type=number]:focus {
+  border: 3px solid #555;
 }
 
 input[type=submit] {

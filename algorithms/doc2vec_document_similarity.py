@@ -41,7 +41,7 @@ class D2V:
         :param model: Doc2Vec model
         :param list[list] vecs: vector representation of each document in corpus
         :param str query_doc: query document
-        :param str method: measurement method. Eith 'cosine' or 'euclidean'
+        :param str method: measurement method. Either 'cosine' or 'euclidean'
         :param amount: amount of documents to be returned
         :return dict: dict documents in format {doc id:measurement}
         """

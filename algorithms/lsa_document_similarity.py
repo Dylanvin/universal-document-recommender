@@ -3,12 +3,20 @@ from sklearn.decomposition import TruncatedSVD
 from .distance import Distance
 import itertools
 
-class LSA:
-    def __init__(self):
-        pass
 
-    def tfidf_svd(self, df, colnames, doc, category):
-        df = df.append({colnames[0]:category, colnames[1]:"query", colnames[2]:doc}, ignore_index=True)
+class LSA:
+
+    def tfidf_svd(self, df, colnames, query_doc, query_category):
+        """
+        Creates an LSA model from given documents
+
+        :param dataFrame df: corpus df
+        :param list colnames: df column names
+        :param str query_doc: query document
+        :param str query_category: query document category
+        :return: LSA model
+        """
+        df = df.append({colnames[0]: query_category, colnames[1]: "query", colnames[2]: query_doc}, ignore_index=True)
         vectorizer = TfidfVectorizer()
         bow = vectorizer.fit_transform(df[colnames[2]])
         svd = TruncatedSVD(n_components=20)
@@ -16,6 +24,15 @@ class LSA:
         return lsa
 
     def similar_docs(self, lsa, size, method, amount):
+        """
+        returns N documents which are most similar in ascending order
+
+        :param lsa: LSA model of corpus
+        :param size: size of corpus (in order to exclude last entry which is the query)
+        :param str method: measurement method. Either 'cosine' or 'euclidean'
+        :param int amount: amount of documents to be returned
+        :return dict: dict documents in format {doc id:measurement}
+        """
         doc_dict = {}
         dist = Distance()
         if method == 'cosine':

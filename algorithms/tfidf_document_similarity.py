@@ -5,8 +5,6 @@ from .distance import Distance
 
 
 class TfIdf:
-    def __init__(self):
-        pass
 
     # # TF section (run before request)
     # def tf(self, df, colnames):
@@ -79,7 +77,7 @@ class TfIdf:
                         idf[word] = 1
 
         for key in idf:
-            idf[key] = math.log10(float((len(df.index)) / (idf[key] + 1.0)))
+            idf[key] = math.log10(float(len(df.index) / (idf[key] + 1.0)))
 
         return idf
 
@@ -102,14 +100,14 @@ class TfIdf:
                 tf_idf[key][i] = qtf[key][i] * qidf[key]
         return tf_idf
 
-    def similarDocs(self, tf_idf, size, method, amount):
+    def similar_docs(self, tf_idf, size, method, amount):
         """
               returns N documents which are most similar in ascending order to last document (assumed to be query)
               in tf_idf dict
 
               :param dict tf_idf: tf_idf model
               :param int size: amount of docs
-              :param str method: measurement method. Eith 'cosine' or 'euclidean'
+              :param str method: measurement method. Either 'cosine' or 'euclidean'
               :param int amount: amount of documents to be returned
               :return dict: dict documents in format {doc id:measurement}
               """
@@ -138,8 +136,5 @@ class TfIdf:
                 angle = dist.euclidean(doc_tf_idf_ls, query_tf_idf_ls)
                 doc_dict[i] = angle
             doc_dict = {k: v for k, v in sorted(doc_dict.items(), key=lambda item: item[1])}
-
-
-
 
         return dict(itertools.islice(doc_dict.items(), amount))

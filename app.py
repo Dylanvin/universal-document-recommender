@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
 from forms import RunSystemForm
-from wtforms.validators import ValidationError
 from algorithms.tfidf_document_similarity import TfIdf
 from algorithms.doc2vec_document_similarity import D2V
 from algorithms.lsa_document_similarity import LSA
@@ -8,7 +7,6 @@ from algorithms.bert_document_similarity import BERT
 from algorithms.evaluate import Evaluate
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
 from sklearn.datasets import fetch_20newsgroups
 import pandas as pd
 import re
@@ -18,7 +16,6 @@ import numpy as np
 import nltk
 import html2text
 import requests
-from bs4 import BeautifulSoup
 
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -30,12 +27,23 @@ app.config['SECRET_KEY'] = SECRET_KEY
 
 @app.route('/text/<doc>')
 def text(doc):
+    """
+    Displays text document
+
+    :param str doc:  text document
+    :return: Text document page
+    """
     doc = doc.replace('FORWARD_SLASH', '/')
     return render_template('text.html', doc=doc)
 
 
 @app.route('/', methods=['post', 'get'])
 def index():
+    """
+    Flask view. processes main html form and runs respective similarity method.
+
+    :return: Results page
+    """
     form = RunSystemForm()
     form.category.choices = list(target_names)
     if request.method == 'POST':
@@ -47,19 +55,16 @@ def index():
             print(form.query.data)
             print(form.category.data)
 
-
             if check:
                 query_doc = request.form['query']
             else:
 
-                URL = request.form['query_url']  ######implement URL form element option
+                URL = request.form['query_url']
                 page = requests.get(URL).text
                 h = html2text.HTML2Text()
                 h.ignore_links = True
                 h.ignore_images = True
                 query_doc = h.handle(page)
-                # except:
-                #     return render_template('index.html', form=form)
 
             alg = request.form['algorithm']
             dist_method = request.form['measurement']
@@ -86,19 +91,12 @@ def index():
                 lsa = ds.tfidf_svd(df, colnames, filtered_query_doc, category)
                 docs = ds.similar_docs(lsa, len(df.index), dist_method, n)
 
-
             elif alg == "Doc2Vec":
                 # word2vec
                 print("########################## WORD2VEC ##########################")
                 ds = D2V()
                 model = ds.train(df, colnames, model_file)
                 docs = ds.similar_docs(model, doc2vec_vecs, filtered_query_doc, dist_method, n)
-                # doc_list = []
-                # dist_list = []
-                # for i in docs:
-                #     doc_list.append(i[0])
-                #     dist_list.append(round(i[1], 5))
-
 
             elif alg == "BERT":
                 # word2vec
@@ -124,8 +122,24 @@ def index():
 
     return render_template('index.html', form=form)
 
+@app.route('/about')
+def about():
+    """
+    Displays about page
+
+    :return:
+    """
+    return render_template('about.html')
 
 def get_vecs(vec_file, alg):
+    """
+    Checks if files containing vectorised documents exist, if they they do they are loaded otherwise the
+    respective algorithm will generate the file (very slow).
+
+    :param str vec_file: name of file to look for
+    :param str alg: name of algorithm to run [doc2vec, bert]
+    :return list[list]: vectorised documents
+    """
     if not os.path.isfile(vec_file):
         if alg == "doc2vec":
             ds = D2V()
@@ -176,7 +190,7 @@ doc2vec_vecs = get_vecs(vec_file, alg)
 alg = "bert"
 vec_file = 'bert_vecs.txt'
 bert_vecs = get_vecs(vec_file, alg)
-# pre-processing finished
+# pre-processing finished sever begins
 
 print(__name__)
 if __name__ == '__main__':
