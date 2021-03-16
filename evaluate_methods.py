@@ -82,6 +82,7 @@ def run_algs(alg, dist_method, n, category, filtered_query_doc):
     :param str filtered_query_doc: query document which has been filtered to remove stop words ect.
     :return int: score result
     """
+    
     if alg == "TfIdf":
         print("########################## TFIDF ##########################")
         ds = TfIdf()
