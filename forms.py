@@ -10,10 +10,13 @@ class RunSystemForm(FlaskForm):
     algorithm = RadioField(
         'Algorithm selection', choices=[('TfIdf', 'Tf-Idf'), ('LSA', 'LSA'), ('Doc2Vec', 'Doc2Vec'), ('BERT', 'BERT')],
         default='TfIdf')
+    # algorithm = RadioField(
+    #     'Algorithm selection', choices=[('TfIdf', 'Tf-Idf'), ('LSA', 'LSA'), ('Doc2Vec', 'Doc2Vec')],
+    #     default='TfIdf')
     measurement = RadioField(
         'Measurement selection', choices=[('cosine', 'Cosine'), ('euclidean', 'Euclidean')], default='cosine')
     query = TextAreaField('Document text', default='Enter query here')
-    query_url = StringField('Document url', default='https://en.wikipedia.org/wiki/Medicine')
+    query_url = StringField('Document url')
     category = SelectField("Choose an option", validators=[DataRequired()])
     num = IntegerField(
         "num", widget=h5widgets.NumberInput(min=1, max=10), default=5, validators=[DataRequired()])

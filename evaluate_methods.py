@@ -58,12 +58,12 @@ colnames.append('Text cleaned')
 
 # doc2vec and BERT creating vecs
 alg = "doc2vec"
-model_file = 'd2v.model'
-vec_file = 'doc2vec_vecs.txt'
+model_file = 'datafiles/d2v.model'
+vec_file = 'datafiles/doc2vec_vecs.txt'
 doc2vec_vecs = get_vecs(vec_file, alg)
 
 alg = "bert"
-vec_file = 'bert_vecs.txt'
+vec_file = 'datafiles/bert_vecs.txt'
 bert_vecs = get_vecs(vec_file, alg)
 
 
@@ -82,13 +82,13 @@ def run_algs(alg, dist_method, n, category, filtered_query_doc):
     :param str filtered_query_doc: query document which has been filtered to remove stop words ect.
     :return int: score result
     """
-    
+
     if alg == "TfIdf":
         print("########################## TFIDF ##########################")
         ds = TfIdf()
         tf_idf = ds.tdfIdf(df, colnames, filtered_query_doc, category)
-        docs = ds.similar_docs(tf_idf, len(df.index), dist_method,
-                              n)  # assumes query is the last doc in every value of key
+        docs = ds.similar_docs(tf_idf, len(df.index), dist_method, n)
+        # assumes query is the last doc in every value of key
 
     elif alg == "LSA":
         # LSA
@@ -127,14 +127,14 @@ def run_algs(alg, dist_method, n, category, filtered_query_doc):
 
 algorithms = ['TfIdf', 'LSA', 'Doc2Vec', 'BERT']  # list of available methods to use
 mes = ['cosine', 'euclidean']
-test_docs_df = pd.read_csv('test_docs.txt', delimiter=",")
+test_docs_df = pd.read_csv('datafiles/test_docs.txt', delimiter=",")
 print(test_docs_df.columns.values)
 
 h = html2text.HTML2Text()
 h.ignore_links = True
 h.ignore_images = True
 
-file = "results.csv"
+file = "datafiles/results.csv"
 if not os.path.isfile(file):
     test_docs_df["Text"] = test_docs_df.Url.apply(
         lambda x: h.handle(requests.get(x).text))

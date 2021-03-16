@@ -81,7 +81,7 @@ def index():
                 print("########################## TFIDF ##########################")
                 ds = TfIdf()
                 tf_idf = ds.tdfIdf(df, colnames, filtered_query_doc, category)
-                docs = ds.similarDocs(tf_idf, len(df.index), dist_method,
+                docs = ds.similar_docs(tf_idf, len(df.index), dist_method,
                                       n)  # assumes query is the last doc in every value of key
 
             elif alg == "LSA":
@@ -183,12 +183,12 @@ print("pre-processing done")
 
 # doc2vec and BERT creating vecs
 alg = "doc2vec"
-model_file = 'd2v.model'
-vec_file = 'doc2vec_vecs.txt'
+model_file = 'datafiles/d2v.model'
+vec_file = 'datafiles/doc2vec_vecs.txt'
 doc2vec_vecs = get_vecs(vec_file, alg)
 
 alg = "bert"
-vec_file = 'bert_vecs.txt'
+vec_file = 'datafiles/bert_vecs.txt'
 bert_vecs = get_vecs(vec_file, alg)
 # pre-processing finished sever begins
 
