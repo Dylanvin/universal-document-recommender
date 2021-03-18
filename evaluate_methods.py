@@ -91,21 +91,21 @@ def run_algs(alg, dist_method, n, category, filtered_query_doc):
         # assumes query is the last doc in every value of key
 
     elif alg == "LSA":
-        # LSA
+
         print("########################## LSA ##########################")
         ds = LSA()
         lsa = ds.tfidf_svd(df, colnames, filtered_query_doc, category)
         docs = ds.similar_docs(lsa, len(df.index), dist_method, n)
 
     elif alg == "Doc2Vec":
-        # word2vec
-        print("########################## WORD2VEC ##########################")
+
+        print("########################## DOC2VEC ##########################")
         ds = D2V()
         model = ds.train(df, colnames, model_file)
         docs = ds.similar_docs(model, doc2vec_vecs, filtered_query_doc, dist_method, n)
 
     elif alg == "BERT":
-        # word2vec
+
         print("########################## BERT ##########################")
         ds = BERT()
         docs = ds.similar_docs(bert_vecs, filtered_query_doc, dist_method, n)
@@ -158,21 +158,22 @@ else:
 
 mean = results_df.mean(axis=0)
 median = results_df.median(axis=0)
+
+mean1 = results_df.head(20).mean(axis=0)
+mean2 = results_df.tail(20).mean(axis=0)
 print("Mean:")
 print(mean)
 print("Median:")
 print(median)
 
-# Set the figure size
+# plotting figures
+boxplot = results_df.boxplot(figsize=(15, 8))
+plt.savefig("figs/boxplt.png", bbox_inches="tight")
+plt.clf()
 
-# plt.figure(figsize=(12,4))
-
-
+# Mean
 mean.plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]), grid=True)
 plt.savefig("figs/mean.png", bbox_inches="tight")
-
-median.plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]), grid=True)
-plt.savefig("figs/median.png", bbox_inches="tight")
 
 mean[["TfIdf(cosine)", "TfIdf(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
                                                      grid=True)
@@ -188,3 +189,62 @@ plt.savefig("figs/mean_doc2vec.png", bbox_inches="tight")
 mean[["BERT(cosine)", "BERT(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
                                                    grid=True)
 plt.savefig("figs/mean_bert.png", bbox_inches="tight")
+
+# Median
+median.plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]), grid=True)
+plt.savefig("figs/median.png", bbox_inches="tight")
+
+median[["TfIdf(cosine)", "TfIdf(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
+                                                       grid=True)
+plt.savefig("figs/median_tfidf.png", bbox_inches="tight")
+
+median[["LSA(cosine)", "LSA(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
+                                                   grid=True)
+plt.savefig("figs/median_lsa.png", bbox_inches="tight")
+
+median[["Doc2Vec(cosine)", "Doc2Vec(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
+                                                           grid=True)
+plt.savefig("figs/median_doc2vec.png", bbox_inches="tight")
+
+median[["BERT(cosine)", "BERT(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
+                                                     grid=True)
+plt.savefig("figs/median_bert.png", bbox_inches="tight")
+
+fig = plt.figure()
+
+ax = fig.add_subplot(111)
+ax2 = ax.twinx()
+
+width = 0.4
+
+lns1 = mean1.plot(kind='bar', color='red', ax=ax, width=width, xlabel='Algorithm', ylabel='Score', position=1,
+                  label='First half of data')
+lns2 = mean2.plot(kind='bar', color='blue', ax=ax2, width=width, position=0, label='Second half of data')
+plt.xlim((-0.5, len(mean1) - 0.5))
+
+handles, labels = [], []
+for ax in fig.axes:
+    for h, l in zip(*ax.get_legend_handles_labels()):
+        handles.append(h)
+        labels.append(l)
+
+plt.legend(handles, labels, bbox_to_anchor=(0, 1.02, 0.75, 0.2), loc="lower left",
+           mode="expand", borderaxespad=0, ncol=2)
+
+plt.savefig("figs/mean_split.png", bbox_inches="tight")
+
+# lns1 = mean1.plot(kind='bar', color='red', ax=ax, width=width, xlabel='Algorithm', ylabel='Score', position=1, label = 'First half of data')
+# lns2 = mean2.plot(kind='bar', color='blue', ax=ax2, width=width, position=0, label='Second half of data')
+# plt.xlim((-0.5, len(mean1)-0.5))
+#
+# handles, labels = [], []
+# for ax in fig.axes:
+#     for h, l in zip(*ax.get_legend_handles_labels()):
+#         handles.append(h)
+#         labels.append(l)
+#
+# plt.legend(handles, labels, bbox_to_anchor=(0, 1.02, 0.75, 0.2), loc="lower left",
+#                 mode="expand", borderaxespad=0, ncol=2)
+# #ax.legend("Mean of first half of scores", "Mean of second half of scores", loc=0)
+# # ax2.legend("Mean of second half of scores", loc=2)
+# plt.savefig("figs/mean_split.png", bbox_inches="tight")

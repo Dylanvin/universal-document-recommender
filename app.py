@@ -85,21 +85,21 @@ def index():
                                       n)  # assumes query is the last doc in every value of key
 
             elif alg == "LSA":
-                # LSA
+
                 print("########################## LSA ##########################")
                 ds = LSA()
                 lsa = ds.tfidf_svd(df, colnames, filtered_query_doc, category)
                 docs = ds.similar_docs(lsa, len(df.index), dist_method, n)
 
             elif alg == "Doc2Vec":
-                # word2vec
-                print("########################## WORD2VEC ##########################")
+
+                print("########################## DOC2VEC ##########################")
                 ds = D2V()
                 model = ds.train(df, colnames, model_file)
                 docs = ds.similar_docs(model, doc2vec_vecs, filtered_query_doc, dist_method, n)
 
             elif alg == "BERT":
-                # word2vec
+
                 print("########################## BERT ##########################")
                 ds = BERT()
                 docs = ds.similar_docs(bert_vecs, filtered_query_doc, dist_method, n)
@@ -179,7 +179,6 @@ df['Text'] = df['Text'].str.replace('/', 'FORWARD_SLASH')  # to prevent browser 
 
 colnames.append('Text cleaned')
 algorithms = ['tfidf', 'lsa', 'Doc2Vec']  # list of available methods to use
-print("pre-processing done")
 
 # doc2vec and BERT creating vecs
 alg = "doc2vec"
@@ -190,6 +189,7 @@ doc2vec_vecs = get_vecs(vec_file, alg)
 alg = "bert"
 vec_file = 'datafiles/bert_vecs.txt'
 bert_vecs = get_vecs(vec_file, alg)
+print("pre-processing done")
 # pre-processing finished sever begins
 
 print(__name__)

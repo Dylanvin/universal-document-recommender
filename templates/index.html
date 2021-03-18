@@ -3,7 +3,7 @@
 {% block content %}
 
     <h1>Universal Document Recommender</h1>
-    <div id="loading" style="display:none;"><img src="/static/loading.gif" alt="" /></div>
+
     <div class="entry-form">
         <form method="post">
             <dl>
@@ -49,7 +49,9 @@
             {{ form.hidden_tag() }}
             {{ form.csrf_token }}
             </dl>
+        <div id="loading" style="display:none;"><img src="/static/loading.gif" alt="" /></div>
             <input type="submit" value="Search" onclick="$('#loading').show();">
+
         </form>
     </div>
 
