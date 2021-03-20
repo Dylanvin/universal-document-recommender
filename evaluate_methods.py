@@ -3,18 +3,18 @@ from algorithms.doc2vec_document_similarity import D2V
 from algorithms.lsa_document_similarity import LSA
 from algorithms.bert_document_similarity import BERT
 from algorithms.evaluate import Evaluate
-import pandas as pd
 from nltk.corpus import stopwords
-import re
-from sklearn.datasets import fetch_20newsgroups
 from nltk.stem import WordNetLemmatizer
+from sklearn.datasets import fetch_20newsgroups
+import pandas as pd
+import re
 import os
 import pickle
 import numpy as np
 import html2text
 import matplotlib.pyplot as plt
 import requests
-
+import time
 
 def get_vecs(vec_file, alg):
     if not os.path.isfile(vec_file):
@@ -60,12 +60,17 @@ colnames.append('Text cleaned')
 alg = "doc2vec"
 model_file = 'datafiles/d2v.model'
 vec_file = 'datafiles/doc2vec_vecs.txt'
+start = time.time()
 doc2vec_vecs = get_vecs(vec_file, alg)
+end = time.time()
+print("Doc2vec vectors creation: " + str(end - start))
 
 alg = "bert"
 vec_file = 'datafiles/bert_vecs.txt'
+start = time.time()
 bert_vecs = get_vecs(vec_file, alg)
-
+end = time.time()
+print("BERT vectors creation: " + str(end - start))
 
 # pre-processing finished
 
@@ -85,8 +90,8 @@ def run_algs(alg, dist_method, n, category, filtered_query_doc):
 
     if alg == "TfIdf":
         print("########################## TFIDF ##########################")
-        ds = TfIdf()
-        tf_idf = ds.tdfIdf(df, colnames, filtered_query_doc, category)
+        ds = Tfdf()
+        tf_idf = ds.tf_idf(df, colnames, filtered_query_doc, category)
         docs = ds.similar_docs(tf_idf, len(df.index), dist_method, n)
         # assumes query is the last doc in every value of key
 

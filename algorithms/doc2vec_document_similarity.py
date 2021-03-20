@@ -94,3 +94,4 @@ class D2V:
             vecs.append(model.infer_vector(row[colnames[2]].split()))
 
         return vecs
+

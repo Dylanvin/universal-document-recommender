@@ -1,0 +1,14 @@
+Load vectors
+Doc2vec vectors creation: 0.02695298194885254 seconds
+BERT vectors creation: 0.21471834182739258 seconds
+
+create vectors
+Doc2vec vectors creation: 222.1476559638977 seconds
+BERT vectors creation: 983.9068207740784 seconds
+
+
+TFIDF containing only query key words
+TFIDF creation: 3.9221527576446533
+
+TFIDF containg all key words
+crashes

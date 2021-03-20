@@ -2,7 +2,7 @@ import re
 import math
 import itertools
 from .distance import Distance
-
+import numpy as np
 
 class TfIdf:
 
@@ -32,7 +32,7 @@ class TfIdf:
     #             tf[word][query_index] = words.count(word) / len(words)
     #     return tf
 
-    def tfDocAndQuery(self, df, colnames, query_doc, query_category):
+    def tf_doc_and_query(self, df, colnames, query_doc, query_category):
         """
               Creates a TF model dict and appends query to end of df
 
@@ -45,8 +45,9 @@ class TfIdf:
         tf = {}
         df = df.append({colnames[0]: query_category, colnames[1]: "query", colnames[2]: query_doc}, ignore_index=True)
         query_words = set(re.sub("[^\w]", " ", query_doc).split())
-        for index, row in df.iterrows():
-            words = re.sub("[^\w]", " ", row[colnames[2]]).split()
+        text = df[colnames[2]].array
+        for index in range(len(text)):
+            words = re.sub("[^\w]", " ", text[index]).split()
             for word in set(words):
                 if word in query_words:
                     if word in tf:
@@ -54,10 +55,11 @@ class TfIdf:
                     else:
                         tf[word] = [0] * (len(df.index))
                         tf[word][index] = words.count(word) / len(words)
+
         return tf, df
 
     # IDF section (run after request) only finds idf of query doc words
-    def queryIdf(self, df, colnames):
+    def query_idf(self, df, colnames):
         """
              Creates IDF
 
@@ -67,8 +69,9 @@ class TfIdf:
              """
         idf = {}
         query_words = set(re.sub("[^\w]", " ", df.iloc[-1][colnames[2]]).split())
-        for index, row in df.iterrows():
-            words = re.sub("[^\w]", " ", row[colnames[2]]).split()
+        text = df[colnames[2]].array
+        for index in range(len(text)):
+            words = re.sub("[^\w]", " ", text[index]).split()
             for word in set(words):
                 if word in query_words:
                     if word in idf:
@@ -81,7 +84,7 @@ class TfIdf:
 
         return idf
 
-    def tdfIdf(self, df, colnames, query_doc, query_category):
+    def tf_idf(self, df, colnames, query_doc, query_category):
         """
            Preforms TF * IDF
 
@@ -91,13 +94,14 @@ class TfIdf:
            :param str query_category: query document category
            :return dict tf_idf:
            """
-        qtf, df = self.tfDocAndQuery(df, colnames, query_doc, query_category)
-        qidf = self.queryIdf(df, colnames)
-        tf_idf = {}
-        for key in qidf:
-            tf_idf[key] = [0] * (len(df.index))
-            for i in range(len(df.index)):
-                tf_idf[key][i] = qtf[key][i] * qidf[key]
+        qtf, df = self.tf_doc_and_query(df, colnames, query_doc, query_category)
+        qidf = self.query_idf(df, colnames)
+        query_words = set(re.sub("[^\w]", " ", df.iloc[-1][colnames[2]]).split())
+        tf_idf = np.zeros((len(df.index), len(query_words)))
+        for i, key in enumerate(qidf.keys()):
+            for j in range(len(df.index)):
+                tf_idf[j][i] = qtf[key][j] * qidf[key]
+
         return tf_idf
 
     def similar_docs(self, tf_idf, size, method, amount):
@@ -112,28 +116,22 @@ class TfIdf:
               :return dict: dict documents in format {doc id:measurement}
               """
 
-        query_tf_idf_ls = []  # tf_idf list for query doc
-        for key in tf_idf:
-            query_tf_idf_ls.append(tf_idf[key][size])
+        # query_tf_idf_ls = []  # tf_idf list for query doc
+        # for key in tf_idf:
+        #     query_tf_idf_ls.append(tf_idf[key][size])
 
         dist = Distance()
         doc_dict = {}
 
         if method == "cosine":
             for i in range(size):
-                doc_tf_idf_ls = []
-                for key in tf_idf:  # loop for tf_idf list of docs
-                    doc_tf_idf_ls.append(tf_idf[key][i])
-                angle = dist.cosine(doc_tf_idf_ls, query_tf_idf_ls)
+                angle = dist.cosine(tf_idf[i], tf_idf[len(tf_idf) - 1])
                 doc_dict[i] = angle
             doc_dict = {k: v for k, v in sorted(doc_dict.items(), key=lambda item: item[1], reverse=True)}
 
         if method == 'euclidean':
             for i in range(size):
-                doc_tf_idf_ls = []
-                for key in tf_idf:  # loop for tf_idf list of docs
-                    doc_tf_idf_ls.append(tf_idf[key][i])
-                angle = dist.euclidean(doc_tf_idf_ls, query_tf_idf_ls)
+                angle = dist.cosine(tf_idf[i], tf_idf[len(tf_idf) - 1])
                 doc_dict[i] = angle
             doc_dict = {k: v for k, v in sorted(doc_dict.items(), key=lambda item: item[1])}
 

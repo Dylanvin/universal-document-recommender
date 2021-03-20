@@ -5,6 +5,7 @@ from algorithms.doc2vec_document_similarity import D2V
 from algorithms.lsa_document_similarity import LSA
 from algorithms.bert_document_similarity import BERT
 from algorithms.evaluate import Evaluate
+from algorithms.test import test
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sklearn.datasets import fetch_20newsgroups
@@ -16,6 +17,7 @@ import numpy as np
 import nltk
 import html2text
 import requests
+import time
 
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -80,7 +82,11 @@ def index():
             if alg == "TfIdf":
                 print("########################## TFIDF ##########################")
                 ds = TfIdf()
-                tf_idf = ds.tdfIdf(df, colnames, filtered_query_doc, category)
+                start = time.time()
+                tf_idf = ds.tf_idf(df, colnames, filtered_query_doc, category)
+                end = time.time()
+                print("TFIDF creation: " + str(end - start))
+
                 docs = ds.similar_docs(tf_idf, len(df.index), dist_method,
                                       n)  # assumes query is the last doc in every value of key
 
@@ -89,8 +95,10 @@ def index():
                 print("########################## LSA ##########################")
                 ds = LSA()
                 lsa = ds.tfidf_svd(df, colnames, filtered_query_doc, category)
+                start = time.time()
                 docs = ds.similar_docs(lsa, len(df.index), dist_method, n)
-
+                end = time.time()
+                print("LSA creation: " + str(end - start))
             elif alg == "Doc2Vec":
 
                 print("########################## DOC2VEC ##########################")
