@@ -3,7 +3,7 @@ from forms import RunSystemForm
 from algorithms.tfidf_document_similarity import TfIdf
 from algorithms.doc2vec_document_similarity import D2V
 from algorithms.lsa_document_similarity import LSA
-from algorithms.bert_document_similarity import BERT
+#from algorithms.bert_document_similarity import BERT
 from algorithms.evaluate import Evaluate
 from algorithms.test import test
 from nltk.corpus import stopwords
@@ -194,10 +194,10 @@ model_file = 'datafiles/d2v.model'
 vec_file = 'datafiles/doc2vec_vecs.txt'
 doc2vec_vecs = get_vecs(vec_file, alg)
 
-alg = "bert"
-vec_file = 'datafiles/bert_vecs.txt'
-bert_vecs = get_vecs(vec_file, alg)
-print("pre-processing done")
+# alg = "bert"
+# vec_file = 'datafiles/bert_vecs.txt'
+# bert_vecs = get_vecs(vec_file, alg)
+# print("pre-processing done")
 # pre-processing finished sever begins
 
 print(__name__)

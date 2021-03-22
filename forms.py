@@ -7,12 +7,12 @@ import requests
 
 
 class RunSystemForm(FlaskForm):
-    algorithm = RadioField(
-        'Algorithm selection', choices=[('TfIdf', 'Tf-Idf'), ('LSA', 'LSA'), ('Doc2Vec', 'Doc2Vec'), ('BERT', 'BERT')],
-        default='TfIdf')
     # algorithm = RadioField(
-    #     'Algorithm selection', choices=[('TfIdf', 'Tf-Idf'), ('LSA', 'LSA'), ('Doc2Vec', 'Doc2Vec')],
+    #     'Algorithm selection', choices=[('TfIdf', 'Tf-Idf'), ('LSA', 'LSA'), ('Doc2Vec', 'Doc2Vec'), ('BERT', 'BERT')],
     #     default='TfIdf')
+    algorithm = RadioField(
+        'Algorithm selection', choices=[('TfIdf', 'Tf-Idf'), ('LSA', 'LSA'), ('Doc2Vec', 'Doc2Vec')],
+        default='TfIdf')
     measurement = RadioField(
         'Measurement selection', choices=[('cosine', 'Cosine'), ('euclidean', 'Euclidean')], default='cosine')
     query = TextAreaField('Document text', default='Enter query here')
