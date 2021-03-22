@@ -131,7 +131,7 @@ class TfIdf:
 
         if method == 'euclidean':
             for i in range(size):
-                angle = dist.cosine(tf_idf[i], tf_idf[len(tf_idf) - 1])
+                angle = dist.euclidean(tf_idf[i], tf_idf[len(tf_idf) - 1])
                 doc_dict[i] = angle
             doc_dict = {k: v for k, v in sorted(doc_dict.items(), key=lambda item: item[1])}
 

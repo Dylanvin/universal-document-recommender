@@ -90,7 +90,7 @@ def run_algs(alg, dist_method, n, category, filtered_query_doc):
 
     if alg == "TfIdf":
         print("########################## TFIDF ##########################")
-        ds = Tfdf()
+        ds = TfIdf()
         tf_idf = ds.tf_idf(df, colnames, filtered_query_doc, category)
         docs = ds.similar_docs(tf_idf, len(df.index), dist_method, n)
         # assumes query is the last doc in every value of key

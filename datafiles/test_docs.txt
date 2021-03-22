@@ -11,9 +11,9 @@ https://en.wikipedia.org/wiki/Gordie_Howe,rec.sport.hockey
 https://en.wikipedia.org/wiki/Liberation_of_Arnhem,talk.politics.misc
 https://en.wikipedia.org/wiki/Bicycle_and_motorcycle_geometry,rec.motorcycles
 https://en.wikipedia.org/wiki/Macintosh_XL,comp.sys.mac.hardware
-https://community.ebay.co.uk/t5/Seller-Central/Request-from-buyer-to-cancel-sale-will-it-affect-my-rating/td-p/6900567,misc.forsale
-https://forum.nasaspaceflight.com/index.php?PHPSESSID=ll3uis707vp7ua9a6o6psvfl9f&topic=53191.0,sci.space
-https://www.bleepingcomputer.com/forums/t/744215/ethernet-not-working-after-windows-update/,comp.windows.x
+https://en.wikipedia.org/wiki/Levan_polysaccharide,sci.med
+https://en.wikipedia.org/wiki/Titan_(moon),sci.space
+https://en.wikipedia.org/wiki/Windows_Vista_networking_technologies,comp.windows.x
 https://en.wikipedia.org/wiki/Deep_Blue_(chess_computer),comp.sys.ibm.pc.hardware
 https://en.wikipedia.org/wiki/Electric_light,sci.electronics
 https://en.wikipedia.org/wiki/Hippocrates,sci.med
