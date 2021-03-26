@@ -4,6 +4,7 @@ html, body {
     padding-top: 20px;
     width: 100%;
     margin: 0;
+    font-family: sans-serif, Arial;
 }
 
 h1 {
@@ -19,10 +20,8 @@ form {
     padding: 10px;
     margin-bottom: 25px;
     /* background-color: #e0c68b !important; */
-    border: 1px solid black;
-
-
-
+    border-bottom: 4px solid black;
+    border-top: 4px solid black;
     width: 100%;
     text-align: center;
 }
@@ -68,7 +67,7 @@ div.footer {
 
 .entry-form dt {
     font-size: 75%;
-    text-decoration: underline;
+
 }
 
 .entry-form dd {

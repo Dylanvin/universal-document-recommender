@@ -5,8 +5,8 @@ class Evaluate:
         each segment of the query document which is identical in the other documents 1 is added to the score. The score
         is then divided by the query category segment length.
 
-        :param doc_cats:
-        :param query_cat:
+        :param list[str] doc_cats:
+        :param str query_cat:
         :return int: score
         """
         query_cat_ls = query_cat.split(".")
