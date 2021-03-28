@@ -1,5 +1,18 @@
-{% extends "base.html" %}
-
-{% block content %}
-    <pre>{{ doc }}</pre>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+      <script type="text/javascript"
+         src="{{ url_for('static', filename='main.js') }}"></script>
+    <title>Universal Document Recommender</title>
+</head>
+<body >
+<div class="navbar">
+  <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('about') }}">About</a>
+</div>
+<div id="content"><pre>{{ doc }}</pre></div>
+</body>
+</html>

@@ -24,6 +24,7 @@ form {
     border-top: 4px solid black;
     width: 100%;
     text-align: center;
+    background-color: #b2b2b2;
 }
 
 /* start https://markheath.net/post/customize-radio-button-css */
@@ -115,14 +116,10 @@ input[type=submit] {
 }
 
 img {
-      position: fixed;
-    left: 44%;
+    position: fixed;
+    left: 42.5%;
     top: 25%;
-
-
     z-index: 1000;
-
-
 }
 
 
