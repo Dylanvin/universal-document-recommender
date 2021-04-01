@@ -7,8 +7,27 @@ Doc2vec vectors creation: 222.1476559638977 seconds
 BERT vectors creation: 983.9068207740784 seconds
 
 
-TFIDF containing only query key words
-TFIDF creation: 3.9221527576446533
+OLD TFIDF implementation:
 
-TFIDF containg all key words
-crashes
+https://en.wikipedia.org/wiki/Mueller_calculus
+TFIDF runtime: 5.62309455871582(s)
+
+https://en.wikipedia.org/wiki/Medicine
+TFIDF runtime: 25.367743730545044
+
+NEW TFIDF implementation:
+
+https://en.wikipedia.org/wiki/Mueller_calculus
+TFIDF runtime: 3.4846608638763428(s)
+
+https://en.wikipedia.org/wiki/Medicine
+TFIDF runtime: 13.243609428405762(s)
+
+https://en.wikipedia.org/wiki/Mueller_calculus
+LSA runtime: 1.800797700881958
+
+https://en.wikipedia.org/wiki/Mueller_calculus
+Doc2Vec runtime: 1.2792026996612549(s)
+
+https://en.wikipedia.org/wiki/Mueller_calculus
+BERT runtime: 2.690260410308838

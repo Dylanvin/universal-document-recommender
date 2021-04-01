@@ -19,10 +19,10 @@ class Distance:
 
     def euclidean(self, doc, query):
         """
-              finds euclidean distance of two vectors.
+        finds euclidean distance of two vectors.
 
-              :param list doc: vectorised document
-              :param list query: vectorised query document
-              :return float: the smaller the value the more similar the documents
-              """
+        :param list doc: vectorised document
+        :param list query: vectorised query document
+        :return float: the smaller the value the more similar the documents
+        """
         return np.linalg.norm(np.array(doc) - np.array(query))
