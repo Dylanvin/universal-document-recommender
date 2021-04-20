@@ -195,7 +195,9 @@ mean[["BERT(cosine)", "BERT(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='S
                                                    grid=True)
 plt.savefig("figs/mean_bert.png", bbox_inches="tight")
 
+
 # Median
+plt.clf()
 median.plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]), grid=True)
 plt.savefig("figs/median.png", bbox_inches="tight")
 
@@ -233,7 +235,7 @@ for ax in fig.axes:
         handles.append(h)
         labels.append(l)
 
-plt.legend(handles, labels, bbox_to_anchor=(0, 1.02, 0.75, 0.2), loc="lower left",
+plt.legend(handles, labels, bbox_to_anchor=(0, 1.02), loc="lower left",
            mode="expand", borderaxespad=0, ncol=2)
 
 plt.savefig("figs/mean_split.png", bbox_inches="tight")
