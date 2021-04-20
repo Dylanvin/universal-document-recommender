@@ -175,44 +175,57 @@ print(median)
 boxplot = results_df.boxplot(figsize=(15, 8))
 plt.savefig("figs/boxplt.png", bbox_inches="tight")
 plt.clf()
+fig = plt.figure()
 
 # Mean
 mean.plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]), grid=True)
+fig.suptitle('Mean', fontsize=20)
 plt.savefig("figs/mean.png", bbox_inches="tight")
 
 mean[["TfIdf(cosine)", "TfIdf(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
                                                      grid=True)
+fig.suptitle('Mean TFIDF', fontsize=20)
 plt.savefig("figs/mean_tfidf.png", bbox_inches="tight")
 
 mean[["LSA(cosine)", "LSA(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]), grid=True)
+fig.suptitle('Mean LSA', fontsize=20)
 plt.savefig("figs/mean_lsa.png", bbox_inches="tight")
 
 mean[["Doc2Vec(cosine)", "Doc2Vec(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
                                                          grid=True)
+fig.suptitle('Mean Doc2Vec', fontsize=20)
 plt.savefig("figs/mean_doc2vec.png", bbox_inches="tight")
 
 mean[["BERT(cosine)", "BERT(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
                                                    grid=True)
+fig.suptitle('Mean BERT', fontsize=20)
 plt.savefig("figs/mean_bert.png", bbox_inches="tight")
 
+plt.clf()
+fig = plt.figure()
 # Median
 median.plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]), grid=True)
+fig.suptitle('Median', fontsize=20)
 plt.savefig("figs/median.png", bbox_inches="tight")
 
 median[["TfIdf(cosine)", "TfIdf(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
                                                        grid=True)
+fig.suptitle('Median TFIDF', fontsize=20)
 plt.savefig("figs/median_tfidf.png", bbox_inches="tight")
 
 median[["LSA(cosine)", "LSA(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
                                                    grid=True)
+fig.suptitle('Median LSA', fontsize=20)
 plt.savefig("figs/median_lsa.png", bbox_inches="tight")
 
 median[["Doc2Vec(cosine)", "Doc2Vec(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
                                                            grid=True)
+fig.suptitle('Doc2Vec', fontsize=20)
 plt.savefig("figs/median_doc2vec.png", bbox_inches="tight")
 
 median[["BERT(cosine)", "BERT(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
                                                      grid=True)
+fig.suptitle('Median BERT', fontsize=20)
 plt.savefig("figs/median_bert.png", bbox_inches="tight")
 
 fig = plt.figure()
@@ -235,7 +248,7 @@ for ax in fig.axes:
 
 plt.legend(handles, labels, bbox_to_anchor=(0, 1.02, 0.75, 0.2), loc="lower left",
            mode="expand", borderaxespad=0, ncol=2)
-
+fig.suptitle('Mean Split', fontsize=20)
 plt.savefig("figs/mean_split.png", bbox_inches="tight")
 
 # lns1 = mean1.plot(kind='bar', color='red', ax=ax, width=width, xlabel='Algorithm', ylabel='Score', position=1, label = 'First half of data')
