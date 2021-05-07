@@ -220,7 +220,7 @@ plt.savefig("figs/median_lsa.png", bbox_inches="tight")
 
 median[["Doc2Vec(cosine)", "Doc2Vec(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
                                                            grid=True)
-fig.suptitle('Doc2Vec', fontsize=20)
+fig.suptitle('Median Doc2Vec', fontsize=20)
 plt.savefig("figs/median_doc2vec.png", bbox_inches="tight")
 
 median[["BERT(cosine)", "BERT(euclidean)"]].plot.bar(xlabel='Algorithm', ylabel='Score', color=tuple(["g", "b"]),
@@ -248,7 +248,7 @@ for ax in fig.axes:
 
 plt.legend(handles, labels, bbox_to_anchor=(0, 1.02, 0.75, 0.2), loc="lower left",
            mode="expand", borderaxespad=0, ncol=2)
-fig.suptitle('Mean Split', fontsize=20)
+fig.suptitle('Mean Split', fontsize=20, y=1.08)
 plt.savefig("figs/mean_split.png", bbox_inches="tight")
 
 # lns1 = mean1.plot(kind='bar', color='red', ax=ax, width=width, xlabel='Algorithm', ylabel='Score', position=1, label = 'First half of data')
