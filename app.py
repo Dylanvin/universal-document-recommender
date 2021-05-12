@@ -5,7 +5,6 @@ from algorithms.doc2vec_document_similarity import D2V
 from algorithms.lsa_document_similarity import LSA
 #from algorithms.bert_document_similarity import BERT
 from algorithms.evaluate import Evaluate
-from algorithms.test import test
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sklearn.datasets import fetch_20newsgroups
