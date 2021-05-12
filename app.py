@@ -5,6 +5,7 @@ from algorithms.doc2vec_document_similarity import D2V
 from algorithms.lsa_document_similarity import LSA
 #from algorithms.bert_document_similarity import BERT
 from algorithms.evaluate import Evaluate
+from algorithms.test import test
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sklearn.datasets import fetch_20newsgroups
@@ -59,6 +60,7 @@ def index():
             if check:
                 query_doc = request.form['query']
             else:
+
                 URL = request.form['query_url']
                 page = requests.get(URL).text
                 h = html2text.HTML2Text()
@@ -82,44 +84,32 @@ def index():
                 ds = TfIdf()
                 start = time.time()
                 tf_idf = ds.tf_idf(df, colnames, filtered_query_doc, category)
+                end = time.time()
+                print("TFIDF creation: " + str(end - start))
+
                 docs = ds.similar_docs(tf_idf, len(df.index), dist_method,
                                       n)  # assumes query is the last doc in every value of key
-                end = time.time()
-                print("TFIDF runtime: " + str(end - start))
 
             elif alg == "LSA":
+
                 print("########################## LSA ##########################")
                 ds = LSA()
-                start = time.time()
                 lsa = ds.tfidf_svd(df, colnames, filtered_query_doc, category)
+                start = time.time()
                 docs = ds.similar_docs(lsa, len(df.index), dist_method, n)
                 end = time.time()
-                print("LSA runtime: " + str(end - start))
-
+                print("LSA creation: " + str(end - start))
             elif alg == "Doc2Vec":
+
                 print("########################## DOC2VEC ##########################")
                 ds = D2V()
-                start = time.time()
                 model = ds.train(df, colnames, model_file)
                 docs = ds.similar_docs(model, doc2vec_vecs, filtered_query_doc, dist_method, n)
-                end = time.time()
-                print("Doc2Vec runtime: " + str(end - start))
 
-<<<<<<< HEAD
             # elif alg == "BERT":
-            #
             #     print("########################## BERT ##########################")
             #     ds = BERT()
             #     docs = ds.similar_docs(bert_vecs, filtered_query_doc, dist_method, n)
-=======
-            elif alg == "BERT":
-                print("########################## BERT ##########################")
-                ds = BERT()
-                start = time.time()
-                docs = ds.similar_docs(bert_vecs, filtered_query_doc, dist_method, n)
-                end = time.time()
-                print("BERT runtime: " + str(end - start))
->>>>>>> 5fee655088061700d38ee95f7ff68d2423c624eb
 
             doc_list = []
             dist_list = []
@@ -211,4 +201,5 @@ doc2vec_vecs = get_vecs(vec_file, alg)
 
 print(__name__)
 if __name__ == '__main__':
+    print("test")
     app.run(host='0.0.0.0', threaded=True)
