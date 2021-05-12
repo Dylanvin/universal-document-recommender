@@ -106,11 +106,11 @@ def index():
                 model = ds.train(df, colnames, model_file)
                 docs = ds.similar_docs(model, doc2vec_vecs, filtered_query_doc, dist_method, n)
 
-            elif alg == "BERT":
-
-                print("########################## BERT ##########################")
-                ds = BERT()
-                docs = ds.similar_docs(bert_vecs, filtered_query_doc, dist_method, n)
+            # elif alg == "BERT":
+            #
+            #     print("########################## BERT ##########################")
+            #     ds = BERT()
+            #     docs = ds.similar_docs(bert_vecs, filtered_query_doc, dist_method, n)
 
             doc_list = []
             dist_list = []
