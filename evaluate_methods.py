@@ -15,6 +15,8 @@ import html2text
 import matplotlib.pyplot as plt
 import requests
 import time
+from pathlib import Path
+
 
 def get_vecs(vec_file, alg):
     if not os.path.isfile(vec_file):
@@ -170,6 +172,8 @@ print("Mean:")
 print(mean)
 print("Median:")
 print(median)
+
+Path("/figs").mkdir(parents=True, exist_ok=True) #creating dir
 
 # plotting figures
 boxplot = results_df.boxplot(figsize=(15, 8))
