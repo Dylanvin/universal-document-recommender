@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import RadioField, TextAreaField, SelectField, IntegerField, StringField, BooleanField
-from wtforms.validators import DataRequired, URL, ValidationError
+from wtforms.validators import DataRequired, ValidationError
 from wtforms.widgets import html5 as h5widgets
 from urllib.parse import urlparse
 import requests
