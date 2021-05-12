@@ -174,7 +174,6 @@ print("Median:")
 print(median)
 
 Path("/figs").mkdir(parents=True, exist_ok=True) #creating dir
-
 # plotting figures
 boxplot = results_df.boxplot(figsize=(15, 8))
 plt.savefig("figs/boxplt.png", bbox_inches="tight")
